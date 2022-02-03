@@ -1,0 +1,61 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+.root {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  flex-direction: column;
+}
+.inBtn {
+  background-color: #1f7837;
+  color: white;
+}
+.outBtn {
+  background-color: #e01c19;
+  color: white;
+}
+.modal {
+  border-radius: 20px;
+}
+.tab1 {
+  background-color: #0a89bf;
+  width: 10rem;
+  height: 2.5rem;
+  text-align: center;
+  border-radius: 20px;
+  color: white;
+}
+.tab2 {
+  background-color: #0a89bf;
+  width: 10rem;
+  height: 2.5rem;
+  text-align: center;
+  border-radius: 20px;
+  color: white;
+  margin-left: 20px;
+}
+.link {
+  color: white;
+}
+.btnColor {
+  background-color: #c93452;
+  width: 10rem;
+  height: 2.5rem;
+  text-align: center;
+  border-radius: 20px;
+  color: white;
+  margin-top: 1rem;
+  margin-left: 2rem;
+}
+.inpt {
+  margin-top: 1rem;
+  margin-right: 1rem;
+}
+.status {
+  background-color: tomato;
+  color: black;
+  font-size: 10px;
+  font-weight: bold;
+}
