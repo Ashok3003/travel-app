@@ -19,6 +19,7 @@ import { useSnackbar } from "notistack";
 import axios from "axios";
 import moment from "moment";
 import MapRoute from "./MapRoute";
+import {DeviceUUID} from 'device-uuid'
 
 const CHECK_IN_LATITUDE = "CHECK_IN_LATITUDE";
 const CHECK_IN_LONGITUDE = "CHECK_IN_LONGITUDE";
@@ -35,6 +36,10 @@ const TRAVEL_AMOUNT = "TRAVEL_AMOUNT";
 const API_END_POINT = `https://api.opencagedata.com/geocode/v1/json?q=`;
 const API_KEY = `006e4071afe5461dab7cbdf9de3f20f0`;
 
+
+const CHECK_IN_DEVICE_ID = 'CHECK_IN_DEVICE_ID'
+const CHECK_OUT_DEVICE_ID = 'CHECK_OUT_DEVICE_ID'
+
 function App() {
   const { enqueueSnackbar } = useSnackbar();
   const [showCheckInBtn, setShowCheckInBtn] = useState(false);
@@ -46,6 +51,8 @@ function App() {
   const [isConfirm, setIsConfirm] = useState(false);
   const [modal, setModal] = useState(false);
   const getCheckInCurrentLocation = () => {
+    const uuid = new DeviceUUID().get();
+    localStorage.setItem(CHECK_IN_DEVICE_ID,uuid)
     if (window.navigator.geolocation) {
       window.navigator.geolocation.getCurrentPosition((res) => {
         const coords = res?.coords;
@@ -63,6 +70,7 @@ function App() {
               "success",
               enqueueSnackbar
             );
+            
             setShowCheckInBtn(true);
           });
       });
@@ -70,6 +78,11 @@ function App() {
   };
 
   const getCheckOutCurrentocation = () => {
+    const uuid = new DeviceUUID().get()
+    localStorage.setItem(CHECK_OUT_DEVICE_ID,uuid)
+
+    if(getCheckInDeviceId === getCheckoutDeviceId){
+
     if (window.navigator.geolocation) {
       window.navigator.geolocation.getCurrentPosition((res) => {
         setShowCheckInBtn(false);
@@ -95,6 +108,14 @@ function App() {
           });
       });
     }
+  }
+  else{
+    CustomMessage(
+      `You have checking out from the another device`,
+      "error",
+      enqueueSnackbar
+    );
+  }
   };
 
   const getCheckInLatitude = localStorage.getItem(CHECK_IN_LATITUDE);
@@ -103,8 +124,11 @@ function App() {
   const getCheckOutLongitude = localStorage.getItem(CHECK_OUT_LONGITUDE);
   const getCheckInLocation = localStorage.getItem(CHECK_IN_LOCATION);
   const getCheckOutLocation = localStorage.getItem(CHECK_OUT_LOCATION);
+  const getCheckInDeviceId = localStorage.getItem(CHECK_IN_DEVICE_ID);
+  const getCheckoutDeviceId = localStorage.getItem(CHECK_OUT_DEVICE_ID);
 
   useEffect(() => {
+    
     if (isConfirm) {
       const distance = getDistanceFromLatLonInKm(
         getCheckInLatitude,
